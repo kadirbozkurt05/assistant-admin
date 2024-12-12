@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery } from 'react-query';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import UserList from '../components/Users/UserList';
 import axios from 'axios';
 import toast from 'react-hot-toast';

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import { X } from 'lucide-react';
 import axios from 'axios';
 import toast from 'react-hot-toast';

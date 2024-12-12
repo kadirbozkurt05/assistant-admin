@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import { Plus } from 'lucide-react';
 import { Resource } from '../types';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import ResourceForm from '../components/Resources/ResourceForm';
 import ResourceList from '../components/Resources/ResourceList';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const ResourcesPage = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -20,6 +21,21 @@ const ResourcesPage = () => {
       return response.data.resources;
     }
   );
+
+  const handleDelete = async (resourceId: string) => {
+    try {
+      await axios.delete(
+        `https://teacher-assistant-server-0a050558c608.herokuapp.com/api/resources/${resourceId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+      toast.success('Kaynak başarıyla silindi');
+      refetch();
+    } catch (error) {
+      toast.error('Kaynak silinirken bir hata oluştu');
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -44,7 +60,11 @@ const ResourcesPage = () => {
         />
       )}
 
-      <ResourceList resources={resources || []} isLoading={isLoading} />
+      <ResourceList 
+        resources={resources || []} 
+        isLoading={isLoading} 
+        onDelete={handleDelete}
+      />
     </div>
   );
 };

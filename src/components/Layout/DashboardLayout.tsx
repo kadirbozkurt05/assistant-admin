@@ -1,11 +1,15 @@
 import React from 'react';
 import { Outlet, Navigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../../hooks/useAuth';
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
 
 const DashboardLayout = () => {
-  const { user, token } = useAuth();
+  const { user, token, isInitialized } = useAuth();
+
+  if (!isInitialized) {
+    return null; // or a loading spinner
+  }
 
   if (!user || !token) {
     return <Navigate to="/" replace />;

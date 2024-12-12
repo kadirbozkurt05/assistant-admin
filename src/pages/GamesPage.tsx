@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import { Plus } from 'lucide-react';
 import WordGameForm from '../components/Games/WordGameForm';
 import { useWordCount } from '../hooks/useWordCount';

@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import { Plus } from 'lucide-react';
 import { Exam } from '../types';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import ExamForm from '../components/Exams/ExamForm';
 import ExamList from '../components/Exams/ExamList';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 const ExamsPage = () => {
   const [isFormOpen, setIsFormOpen] = useState(false);
@@ -20,6 +21,21 @@ const ExamsPage = () => {
       return response.data;
     }
   );
+
+  const handleDelete = async (examId: string) => {
+    try {
+      await axios.delete(
+        `https://teacher-assistant-server-0a050558c608.herokuapp.com/api/exams/${examId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+      toast.success('Sınav başarıyla silindi');
+      refetch();
+    } catch (error) {
+      toast.error('Sınav silinirken bir hata oluştu');
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -44,7 +60,11 @@ const ExamsPage = () => {
         />
       )}
 
-      <ExamList exams={exams || []} isLoading={isLoading} />
+      <ExamList 
+        exams={exams || []} 
+        isLoading={isLoading} 
+        onDelete={handleDelete}
+      />
     </div>
   );
 };
